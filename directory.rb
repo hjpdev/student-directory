@@ -35,6 +35,34 @@ def input_students
   @students
 end
 
+def print_menu
+	puts "1. Input student's info."
+	puts "2. Display student's info."
+	puts "3. Save student's info."
+	puts "9. Exit."
+end
+
+def interactive_menu
+	loop do
+		print_menu
+		selection = gets.chomp.to_i
+
+		case selection
+			when 1
+				input_students
+			when 2
+				print_in_full(@students)
+			when 3
+				save_students
+			when 9
+				exit
+			else
+				puts "Invalid input, please re-enter."
+				puts
+			end
+	end
+end
+
 def print_header
 	puts "The students of Villains Academy".center(100)
 	puts "-------------".center(100)
@@ -85,29 +113,14 @@ def print_by_cohort(hash)
 	}
 end
 
-def print_menu
-	puts "1. Input student's info."
-	puts "2. Display student's info."
-	puts "9. Exit."
-end
-
-def interactive_menu
-	loop do
-		print_menu
-		selection = gets.chomp.to_i
-
-		case selection
-			when 1
-				input_students
-			when 2
-				print_in_full(@students)
-			when 9
-				exit
-			else
-				puts "Invalid input, please re-enter."
-				puts
-			end
+def save_students
+	file = File.open("students.csv", "w")
+	@students.each do |student|
+		student_data = [student[:name], student[:cohort]]
+		csv_line = student_data.join(", ")
+		file.puts csv_line
 	end
+	file.close
 end
 
 interactive_menu
