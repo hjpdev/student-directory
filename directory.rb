@@ -1,7 +1,7 @@
 @students = []
 
 def input_students
-	puts "Enter names of students, their cohort & their age."
+	puts "Enter names of students, their age & their cohort."
 	puts "To exit, press Enter twice."
 	puts
 	puts "Enter name."
@@ -11,7 +11,7 @@ def input_students
 
 		puts "#{name}'s age?"
 		age = gets.chomp
-		age.empty? ? "age_unknown" : nil
+		age.empty? ? age = "age_unknown" : nil
 
 		puts "And #{name}'s cohort? (First three letters of month eg. 'Jan')"
 		cohort = gets.chomp.capitalize!
@@ -28,7 +28,8 @@ def input_students
 
 		puts "Input info for another student, starting with their name, or press Enter to finish."
 		puts
-		name = gets.chomp.capitalize!
+		name = gets.chomp
+		!name.empty? ? name.capitalize! : nil
 	end
   @students
 end
@@ -49,14 +50,12 @@ def print_all_names(names)
 	puts
 end
 
+#Prints info for single student
 def print_info(student)
 	puts "Name: #{student[:name]}, Age: #{student[:age]} (Cohort: #{student[:cohort]})".center(100)
 end
 
 def sort_by_cohort(names)
-	if !names.empty?
-		cohort_list = names.map {|student| student[:cohort]}.uniq
-	end
 	cohort_hash = {}
 	@students.each {|student|
 		if cohort_hash[student[:cohort]] == nil
