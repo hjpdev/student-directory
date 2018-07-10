@@ -51,7 +51,9 @@ def try_load_students
 	end
 end
 
-def load_students(filename = "students.csv")
+def load_students
+	puts "Load from where?"
+	filename = gets.chomp
 	file = File.open(filename, "r")
 	file.readlines.each do |line|
 		name, age, cohort = line.chomp.split(", ")
@@ -146,7 +148,9 @@ def print_by_cohort(hash)
 end
 
 def save_students
-	file = File.open("students.csv", "w")
+	puts "Save to where?"
+	filename = gets.chomp
+	file = File.open(filename, "w")
 	@students.each do |student|
 		student_data = [student[:name], student[:age], student[:cohort]]
 		csv_line = student_data.join(", ")
