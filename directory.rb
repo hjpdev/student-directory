@@ -56,6 +56,16 @@ def print_info(student)
 	puts "Name: #{student[:name]}, Age: #{student[:age]} (Cohort: #{student[:cohort]})".center(100)
 end
 
+def print_in_full(students)
+	if students.empty?
+		puts "No info entered for anyone..."
+	else
+		print_header
+		print_all_names(students)
+		print_footer(students)
+	end
+end
+
 def sort_by_cohort(names)
 	cohort_hash = {}
 	@students.each {|student|
@@ -75,6 +85,4 @@ def print_by_cohort(hash)
 end
 
 students = input_students
-print_header
-print_all_names(students)
-print_footer(students)
+print_in_full(students)
