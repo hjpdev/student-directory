@@ -1,21 +1,11 @@
-
 @students = []
-
-def print_header
-	puts "The students of Villains Academy".center(100)
-	puts "-------------".center(100)
-end
-
-def print_footer(names)
-	puts "Overall, there are #{names.count} students.".center(100)
-end
 
 def input_students
 	puts "Enter names of students, their cohort & their age."
 	puts "To exit, press Enter twice."
 	puts
 	puts "Enter name."
-	name = gets.chomp
+	name = gets.chomp.capitalize!
 
 	while !name.empty? do
 
@@ -24,7 +14,7 @@ def input_students
 		age.empty? ? "age_unknown" : nil
 
 		puts "And #{name}'s cohort? (First three letters of month eg. 'Jan')"
-		cohort = gets.chomp
+		cohort = gets.chomp.capitalize!
 		cohort.empty? ? cohort = "cohort_unknown" : nil
 		puts
 
@@ -36,15 +26,26 @@ def input_students
 			puts "Now we have #{@students.count} students."
 		end
 
-		puts "Input info for another student, starting with their name, or press Enter to exit."
+		puts "Input info for another student, starting with their name, or press Enter to finish."
 		puts
-		name = gets.chomp
+		name = gets.chomp.capitalize!
 	end
   @students
 end
 
+def print_header
+	puts "The students of Villains Academy".center(100)
+	puts "-------------".center(100)
+end
+
+def print_footer(names)
+	puts "Overall, there are #{names.count} students.".center(100)
+end
+
+#Prints all students, alphabetically
 def print_all_names(names)
-	names.each.with_index(1) {|student, index| puts "#{index}. Name: #{student[:name]}, Age: #{student[:age]} (Cohort: #{student[:cohort]})".center(100)}
+	ordered_names = names.sort_by {|student| student[:name]}
+	ordered_names.each.with_index(1) {|student, index| puts "#{index}. Name: #{student[:name]}, Age: #{student[:age]} (Cohort: #{student[:cohort]})".center(100)}
 	puts
 end
 
@@ -73,22 +74,7 @@ def print_by_cohort(hash)
 	}
 end
 
-#To print only names starting with 'A' (easily changed by amending regex)
-def beginning_with_A(names)
-	names.each do |student|
-		student[:name].chr =~ /A/ ? print_info(student) : nil
-	end
-end
-
-#To print only the names under 12 characters in length
-def name_under12chrs(names)
-	names.each do |student|
-		student[:name].length < 12 ? print_info(student) : nil
-	end
-end
-
 students = input_students
 print_header
 print_all_names(students)
-print_by_cohort(sort_by_cohort(students))
 print_footer(students)
