@@ -5,7 +5,8 @@ def input_students
 	puts "To exit, press Enter twice."
 	puts
 	puts "Enter name."
-	name = gets.chomp.capitalize!
+	name = gets.chomp
+	!name.empty? ? name.capitalize! : nil
 
 	while !name.empty? do
 
@@ -14,8 +15,8 @@ def input_students
 		age.empty? ? age = "age_unknown" : nil
 
 		puts "And #{name}'s cohort? (First three letters of month eg. 'Jan')"
-		cohort = gets.chomp.capitalize!
-		cohort.empty? ? cohort = "cohort_unknown" : nil
+		cohort = gets.chomp
+		!cohort.empty? ? cohort.capitalize! : "cohort_unknown"
 		puts
 
 		@students << {name: name, cohort: cohort, age: age}
