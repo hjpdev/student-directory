@@ -65,8 +65,9 @@ end
 def print_menu
 	puts "1. Input students info."
 	puts "2. Display students info."
-	puts "3. Save students info."
-	puts "4. Load students info."
+	puts "3. Display by cohort."
+	puts "4. Save students info."
+	puts "5. Load students info."
 	puts "9. Exit."
 end
 
@@ -81,9 +82,13 @@ def interactive_menu
 			when 2
 				print_in_full(@students)
 			when 3
-				save_students
+				print_by_cohort(sort_by_cohort)
 			when 4
+				save_students
+				puts "Student data saved."
+			when 5
 				load_students
+				puts "Student data loaded."
 			when 9
 				exit
 			else
@@ -100,7 +105,7 @@ end
 
 def print_footer(names)
 	if @students.count == 1
-		puts "Qverall, there is 1 student."
+		puts "Overall, there is 1 student."
 	else
 		puts "Overall, there are #{names.count} students.".center(100)
 	end
@@ -129,7 +134,7 @@ def print_in_full(students)
 	end
 end
 
-def sort_by_cohort(names)
+def sort_by_cohort
 	cohort_hash = {}
 	@students.each {|student|
 		if cohort_hash[student[:cohort]] == nil
