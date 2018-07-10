@@ -1,31 +1,94 @@
 
+@students = []
+
 def print_header
-	puts "The students of Villains Academy"
-	puts "-------------"
+	puts "The students of Villains Academy".center(100)
+	puts "-------------".center(100)
 end
-def print_names(names)
-	names.each {|student| puts "#{student[:name]} (#{student[:cohort]} cohort)"}
-	puts
-end
+
 def print_footer(names)
-	puts "Overall, there are #{names.count} students."
+	puts "Overall, there are #{names.count} students.".center(100)
 end
 
 def input_students
-	puts "Enter names of students."
-	puts "To exit, press Enter twice"
-	students = []
+	puts "Enter names of students, their cohort & their age."
+	puts "To exit, press Enter twice."
+	puts
+	puts "Enter name."
 	name = gets.chomp
 
 	while !name.empty? do
-		students << {name: name, cohort: :november}
-		puts "Now we have #{students.count} students."
+
+		puts "#{name}'s age?"
+		age = gets.chomp
+		age.empty? ? "age_unknown" : nil
+
+		puts "And #{name}'s cohort? (First three letters of month eg. 'Jan')"
+		cohort = gets.chomp
+		cohort.empty? ? cohort = "cohort_unknown" : nil
+		puts
+
+		@students << {name: name, cohort: cohort, age: age}
+
+		if @students.count == 1
+			puts "1 student registered."
+		else
+			puts "Now we have #{@students.count} students."
+		end
+
+		puts "Input info for another student, starting with their name, or press Enter to exit."
+		puts
 		name = gets.chomp
 	end
-  students
+  @students
+end
+
+def print_all_names(names)
+	names.each.with_index(1) {|student, index| puts "#{index}. Name: #{student[:name]}, Age: #{student[:age]} (Cohort: #{student[:cohort]})".center(100)}
+	puts
+end
+
+def print_info(student)
+	puts "Name: #{student[:name]}, Age: #{student[:age]} (Cohort: #{student[:cohort]})".center(100)
+end
+
+def sort_by_cohort(names)
+	if !names.empty?
+		cohort_list = names.map {|student| student[:cohort]}.uniq
+	end
+	cohort_hash = {}
+	@students.each {|student|
+		if cohort_hash[student[:cohort]] == nil
+			cohort_hash[student[:cohort]] = [student[:name]]
+		else 
+			cohort_hash[student[:cohort]] << student[:name]
+		end
+	}
+	cohort_hash
+end
+
+def print_by_cohort(hash)
+	hash.each {|key, value|
+		puts "#{key}: #{value}".center(100)
+	}
+end
+
+#To print only names starting with 'A' (easily changed by amending regex)
+def beginning_with_A(names)
+	names.each do |student|
+		student[:name].chr =~ /A/ ? print_info(student) : nil
+	end
+end
+
+#To print only the names under 12 characters in length
+def name_under12chrs(names)
+	names.each do |student|
+		student[:name].length < 12 ? print_info(student) : nil
+	end
 end
 
 students = input_students
 print_header
-puts students
+print_all_names(students)
+print_by_cohort(sort_by_cohort(students))
 print_footer(students)
