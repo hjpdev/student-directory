@@ -36,9 +36,10 @@ def input_students
 end
 
 def print_menu
-	puts "1. Input student's info."
-	puts "2. Display student's info."
-	puts "3. Save student's info."
+	puts "1. Input students info."
+	puts "2. Display students info."
+	puts "3. Save students info."
+	puts "4. Load students info."
 	puts "9. Exit."
 end
 
@@ -54,6 +55,8 @@ def interactive_menu
 				print_in_full(@students)
 			when 3
 				save_students
+			when 4
+				load_students
 			when 9
 				exit
 			else
@@ -116,9 +119,18 @@ end
 def save_students
 	file = File.open("students.csv", "w")
 	@students.each do |student|
-		student_data = [student[:name], student[:cohort]]
+		student_data = [student[:name], student[:age], student[:cohort]]
 		csv_line = student_data.join(", ")
 		file.puts csv_line
+	end
+	file.close
+end
+
+def load_students
+	file = File.open("students.csv", "r")
+	file.readlines.each do |line|
+		name, age, cohort = line.chomp.split(", ")
+		@students << {name: name, age: age, cohort: cohort.to_sym}
 	end
 	file.close
 end
