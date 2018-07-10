@@ -5,17 +5,17 @@ def input_students
 	puts "To exit, press Enter twice."
 	puts
 	puts "Enter name."
-	name = gets.chomp
+	name = STDIN.gets.chomp
 	!name.empty? ? name.capitalize! : nil
 
 	while !name.empty? do
 
 		puts "#{name}'s age?"
-		age = gets.chomp
+		age = STDIN.gets.chomp
 		age.empty? ? age = "age_unknown" : nil
 
 		puts "And #{name}'s cohort? (First three letters of month eg. 'Jan')"
-		cohort = gets.chomp
+		cohort = STDIN.gets.chomp
 		!cohort.empty? ? cohort.capitalize! : "cohort_unknown"
 		puts
 
@@ -29,7 +29,7 @@ def input_students
 
 		puts "Input info for another student, starting with their name, or press Enter to finish."
 		puts
-		name = gets.chomp
+		name = STDIN.gets.chomp
 		!name.empty? ? name.capitalize! : nil
 	end
   @students
@@ -72,7 +72,11 @@ def print_header
 end
 
 def print_footer(names)
-	puts "Overall, there are #{names.count} students.".center(100)
+	if @students.count == 1
+		puts "Qverall, there is 1 student."
+	else
+		puts "Overall, there are #{names.count} students.".center(100)
+	end
 end
 
 #Prints all students, alphabetically
@@ -126,8 +130,20 @@ def save_students
 	file.close
 end
 
-def load_students
-	file = File.open("students.csv", "r")
+def try_load_students
+	filename = ARGV.first
+	return if filename.nil?
+	if File.exists?(filename)
+		load_students(filename)
+		puts "Loaded #{@students.count} from #{filename}."
+	else
+		puts "Sorry, #{filename} does not exist."
+		exit
+	end
+end
+
+def load_students(filename = "students.csv")
+	file = File.open(filename, "r")
 	file.readlines.each do |line|
 		name, age, cohort = line.chomp.split(", ")
 		@students << {name: name, age: age, cohort: cohort.to_sym}
