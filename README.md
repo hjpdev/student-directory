@@ -1,5 +1,5 @@
 # Introduction #
-An exercise in using the command line & git.
+An exercise in using the command line, git & Ruby.
 
 
 # Student Directory #
