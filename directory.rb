@@ -56,6 +56,7 @@ def print_info(student)
 	puts "Name: #{student[:name]}, Age: #{student[:age]} (Cohort: #{student[:cohort]})".center(100)
 end
 
+#Prints all student's info with header & footer
 def print_in_full(students)
 	if students.empty?
 		puts "No info entered for anyone..."
@@ -84,5 +85,29 @@ def print_by_cohort(hash)
 	}
 end
 
-students = input_students
-print_in_full(students)
+def print_menu
+	puts "1. Input student's info."
+	puts "2. Display student's info."
+	puts "9. Exit."
+end
+
+def interactive_menu
+	loop do
+		print_menu
+		selection = gets.chomp.to_i
+
+		case selection
+			when 1
+				input_students
+			when 2
+				print_in_full(@students)
+			when 9
+				exit
+			else
+				puts "Invalid input, please re-enter."
+				puts
+			end
+	end
+end
+
+interactive_menu
