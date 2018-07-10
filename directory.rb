@@ -19,7 +19,7 @@ def input_students
 		!cohort.empty? ? cohort.capitalize! : "cohort_unknown"
 		puts
 
-		@students << {name: name, cohort: cohort, age: age}
+		update_students(name, age, cohort)
 
 		if @students.count == 1
 			puts "1 student registered."
@@ -33,6 +33,31 @@ def input_students
 		!name.empty? ? name.capitalize! : nil
 	end
   @students
+end
+
+def update_students(name, age, cohort)
+	@students << {name: name, age: age, cohort: cohort.to_sym}
+end
+
+def try_load_students
+	filename = ARGV.first
+	return if filename.nil?
+	if File.exists?(filename)
+		load_students(filename)
+		puts "Loaded #{@students.count} from #{filename}."
+	else
+		puts "Sorry, #{filename} does not exist."
+		exit
+	end
+end
+
+def load_students(filename = "students.csv")
+	file = File.open(filename, "r")
+	file.readlines.each do |line|
+		name, age, cohort = line.chomp.split(", ")
+		update_students(name, age, cohort)
+	end
+	file.close
 end
 
 def print_menu
@@ -126,27 +151,6 @@ def save_students
 		student_data = [student[:name], student[:age], student[:cohort]]
 		csv_line = student_data.join(", ")
 		file.puts csv_line
-	end
-	file.close
-end
-
-def try_load_students
-	filename = ARGV.first
-	return if filename.nil?
-	if File.exists?(filename)
-		load_students(filename)
-		puts "Loaded #{@students.count} from #{filename}."
-	else
-		puts "Sorry, #{filename} does not exist."
-		exit
-	end
-end
-
-def load_students(filename = "students.csv")
-	file = File.open(filename, "r")
-	file.readlines.each do |line|
-		name, age, cohort = line.chomp.split(", ")
-		@students << {name: name, age: age, cohort: cohort.to_sym}
 	end
 	file.close
 end
